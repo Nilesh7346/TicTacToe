@@ -12,16 +12,23 @@ namespace TicTacToe.Repository
             _context = context;
         }
 
-        public Game GetGameWithLock(int gameId)
+        public Game? GetGameWithLock(int gameId)
         {
-            using (var transactionScope = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
+            try
             {
-                IsolationLevel = IsolationLevel.ReadCommitted
-            }))
+                using (var transactionScope = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
+                {
+                    IsolationLevel = IsolationLevel.ReadCommitted
+                }))
+                {
+                    var game = _context.Game.SingleOrDefault(g => g.Id == gameId);
+                    transactionScope.Complete();
+                    return game;
+                }
+            }
+            catch (Exception)
             {
-                var game = _context.Games.SingleOrDefault(g => g.Id == gameId);
-                transactionScope.Complete();
-                return game;
+                throw;
             }
         }
 
@@ -32,7 +39,20 @@ namespace TicTacToe.Repository
                 IsolationLevel = IsolationLevel.ReadCommitted
             }))
             {
-                _context.Games.Update(game);
+                _context.Game.Update(game);
+                _context.SaveChanges();
+                transactionScope.Complete();
+            }
+        }
+
+        public void AddGame(Game game)
+        {
+            using (var transactionScope = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
+            {
+                IsolationLevel = IsolationLevel.ReadCommitted
+            }))
+            {
+                _context.Game.Add(game);
                 _context.SaveChanges();
                 transactionScope.Complete();
             }

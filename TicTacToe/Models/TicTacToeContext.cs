@@ -6,6 +6,6 @@ namespace TicTacToe.Models
     {
         public TicTacToeContext(DbContextOptions<TicTacToeContext> options) : base(options) { }
 
-        public DbSet<Game> Games { get; set; }
+        public DbSet<Game> Game { get; set; }       
     }
 }

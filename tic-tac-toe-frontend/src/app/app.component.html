@@ -1,0 +1,31 @@
+<div *ngIf="!isGameStarted" class="player-entry">
+  <h2>Join Game</h2>
+  <label>
+    Player Name:
+    <input type="text" [(ngModel)]="playerName" placeholder="Enter your name" />
+  </label>
+  <br />
+  <button (click)="joinGame('X')"
+          [disabled]="isPlayerXJoined || assignedSymbol === 'O'">
+    Join as Player X
+  </button>
+  <span>     </span>
+  <button (click)="joinGame('O')"
+          [disabled]="isPlayerOJoined || assignedSymbol === 'X'">
+    Join as Player O
+  </button>
+</div>
+<div *ngIf="isGameStarted" class="game-board">
+  <h3>Current Turn: {{ currentTurn }}</h3>
+  <h4>Your Symbol: {{ assignedSymbol }}</h4>
+  <table>
+    <tr *ngFor="let row of board; let rowIndex = index">
+      <td *ngFor="let cell of row; let colIndex = index"
+          (click)="makeMove(rowIndex, colIndex)"
+          [class.clickable]="cell === '' && myTurn"
+          [class.occupied]="cell !== ''">
+        {{ cell }}
+      </td>
+    </tr>
+  </table>
+</div>

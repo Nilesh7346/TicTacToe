@@ -1,0 +1,5 @@
+/* Custom style to highlight cells */
+.highlight {
+  background-color: yellow;
+  font-weight: bold;
+}

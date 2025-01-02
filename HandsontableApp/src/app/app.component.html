@@ -1,0 +1,13 @@
+<hot-table [data]="data"
+           [rowHeaders]="true"
+           [colHeaders]="true"
+           [navigableHeaders]="true"
+           [tabNavigation]="true"
+           [multiColumnSorting]="true"
+           headerClassName="htLeft"
+           licenseKey="non-commercial-and-evaluation">
+  <hot-column title="Name" data="name" width=100></hot-column>
+  <hot-column title="Compony" data="company" width=170 type="dropdown" [source]="['ABC', 'PQR', 'XYZ']"></hot-column>
+  <hot-column title="Age" data="age" width=100 type="numeric"></hot-column>
+  <hot-column title="DOB" data="dob" width=100 type="date"></hot-column>
+</hot-table>

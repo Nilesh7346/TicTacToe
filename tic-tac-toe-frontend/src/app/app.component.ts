@@ -30,7 +30,7 @@ export class AppComponent implements OnInit, OnDestroy {
       if (gameId === this.gameId) {
         this.board = JSON.parse(boardState);
         this.currentTurn = currentTurn;
-        this.myTurn = this.assignedSymbol === this.currentTurn; // Check if it's this player's turn
+        this.myTurn = (this.assignedSymbol === this.currentTurn); // Check if it's this player's turn
       }
     });
 

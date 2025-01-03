@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core';
+import { Component, AfterViewInit, ViewChild, ElementRef, Renderer2 } from '@angular/core';
 import { HotTableComponent, HotTableModule } from '@handsontable/angular';
 import Handsontable from 'handsontable';
 import { registerAllModules } from 'handsontable/registry';
@@ -11,20 +11,20 @@ import { registerAllModules } from 'handsontable/registry';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  @ViewChild(HotTableComponent) hotTableComponent!: HotTableComponent; // Access HotTableComponent
+  @ViewChild(HotTableComponent) hotTableComponent!: HotTableComponent;
+  @ViewChild('messageDiv', { static: true }) messageDiv!: ElementRef;
+
   eventMsg: string = "";
-  // Define your dataset with five columns, including 'notes' for the popup editor
   data: any[] = [
     { name: 'Tagcat', company: 'ABC', age: 35, dob: "1990/03/31", notes: '' },
     { name: 'Zoomzone', company: 'ABC', age: 32, dob: "1993/05/20", notes: '' },
     { name: 'Meeveo', company: 'XYZ', age: 29, dob: "1995/12/08", notes: '' },
   ];
 
-  constructor(private cdr: ChangeDetectorRef) {
-    // Register all Handsontable modules
+  constructor(private renderer: Renderer2) {
+
     registerAllModules();
 
-    // Define the custom editor by extending the TextEditor
     class PopupEditor extends Handsontable.editors.TextEditor {
       private inputValue: string | null = null;
       override open() {
@@ -55,18 +55,16 @@ export class AppComponent {
   }
 
   ngAfterViewInit(): void {
-    const hotInstance = (this.hotTableComponent as any).hotInstance; // Access `hotInstance` dynamically
+    const hotInstance = (this.hotTableComponent as any).hotInstance;
 
     if (hotInstance) {
       hotInstance.addHook('afterChange', this.handleAfterChange.bind(this));
       hotInstance.addHook('afterSelection', this.afterSelection.bind(this));
-      hotInstance.addHook('cellMouseDown', this.handleCellMouseDown.bind(this));
     }
   }
 
   afterSelection(r: number, c: number, r2: number, c2: number, event: any): void {
-    this.eventMsg = "after selection";
-    this.cdr.detectChanges();
+    this.renderer.setProperty(this.messageDiv.nativeElement, 'innerHTML', "after selection");
     if (c == 4) {
       const hotInstance = (this.hotTableComponent as any).hotInstance;
       const cellValue = hotInstance.getDataAtCell(r, c);
@@ -76,8 +74,7 @@ export class AppComponent {
 
 
   handleAfterChange(changes: Handsontable.CellChange[] | null, source: string): void {
-    this.eventMsg = "after change";
-    this.cdr.detectChanges();
+    this.renderer.setProperty(this.messageDiv.nativeElement, 'innerHTML', "after change");
     if (changes) {
       changes.forEach(([row, property, oldValue, newValue]) => {
         if (property === 'dob' && newValue) {
@@ -89,11 +86,6 @@ export class AppComponent {
     }
   }
 
-  handleCellMouseDown(event: MouseEvent, coords: Handsontable.CellCoords, td: HTMLTableCellElement, prop: string, value: any) {
-    this.eventMsg = "after mouse down";
-    this.cdr.detectChanges();
-  }
-
   calculateAge(dob: string): number {
     const today = new Date();
     const birthDate = new Date(dob);
@@ -102,7 +94,7 @@ export class AppComponent {
     if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
       age--;
     }
-    return age >= 0 ? age : 0; // Return 0 if the DOB is invalid or in the future
+    return age >= 0 ? age : 0;
   }
 
   nameValidator(value: string, callback: Function): void {
@@ -110,7 +102,6 @@ export class AppComponent {
     callback(isValid);
   }
 
-  // DOB validator: Ensures date is not in the future
   dobValidator(value: string, callback: Function): void {
     const today = new Date();
     const dob = new Date(value);

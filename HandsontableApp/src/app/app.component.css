@@ -3,3 +3,16 @@
   background-color: yellow;
   font-weight: bold;
 }
+
+.hot td {
+  pointer-events: none; /* Disable click events for the entire cell */
+}
+
+.open-editor-img {
+  pointer-events: auto; /* Enable click events only for the icon */
+  cursor: pointer; /* Show a pointer cursor for the icon */
+  width: 15px;
+  height: 15px;
+  margin-left: 5px;
+  vertical-align: top;
+}

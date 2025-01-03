@@ -1,1 +1,28 @@
+/* Custom style to highlight cells */
+.highlight {
+  background-color: yellow;
+  font-weight: bold;
+}
 
+.open-editor-img {
+  pointer-events: auto; /* Enable click events only for the icon */
+  cursor: pointer; /* Show a pointer cursor for the icon */
+  width: 15px;
+  height: 15px;
+  margin-left: 75px;
+  vertical-align: top;
+}
+
+.custom-tooltip {
+  background-color: rgba(255, 0, 0, 0.8);
+  color: white;
+  padding: 5px;
+  border-radius: 4px;
+  position: absolute;
+  z-index: 9999; /* Ensure it's on top of other elements */
+}
+
+.htInvalid {
+  background-color: #ffcccc; /* Highlight invalid cell */
+  border: 1px solid red; /* Optional: Red border for invalid cells */
+}

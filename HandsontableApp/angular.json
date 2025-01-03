@@ -24,7 +24,9 @@
               {
                 "glob": "**/*",
                 "input": "public"
-              }
+              },
+              "src/icon.svg",
+              "src/assets"
             ],
             "styles": [
               "src/styles.css",
@@ -83,7 +85,9 @@
               {
                 "glob": "**/*",
                 "input": "public"
-              }
+              },
+              "src/icon.svg",
+              "src/assets"
             ],
             "styles": [
               "src/styles.css"

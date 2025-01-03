@@ -1,4 +1,4 @@
-<hot-table [data]="data"
+<hot-table #hotTable [data]="data"
            [rowHeaders]="true"
            [colHeaders]="true"
            [navigableHeaders]="true"
@@ -6,8 +6,27 @@
            [multiColumnSorting]="true"
            headerClassName="htLeft"
            licenseKey="non-commercial-and-evaluation">
-  <hot-column title="Name" data="name" width=100></hot-column>
+  <hot-column title="Name"
+              data="name"
+              width="100"
+              [validator]="nameValidator.bind(this)"
+              [allowInvalid]="true"></hot-column>
   <hot-column title="Compony" data="company" width=170 type="dropdown" [source]="['ABC', 'PQR', 'XYZ']"></hot-column>
-  <hot-column title="Age" data="age" width=100 type="numeric"></hot-column>
-  <hot-column title="DOB" data="dob" width=100 type="date"></hot-column>
+  <hot-column title="Age"
+              data="age"
+              width="100"
+              type="numeric"
+              [readOnly]="true"
+              [allowInvalid]="true"></hot-column>
+  <hot-column title="DOB"
+              data="dob"
+              width="100"
+              type="date"
+              dateFormat="YYYY/MM/DD"
+              [validator]="dobValidator.bind(this)"
+              [allowInvalid]="true"></hot-column>
+  <hot-column title="Notes" data="notes" [editor]="'popupEditor'"></hot-column>
 </hot-table>
+<br>
+<br>
+<p> Event : {{ eventMsg }}</p>
